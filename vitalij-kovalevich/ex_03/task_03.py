@@ -1,4 +1,3 @@
-%matplotlib inline
 import matplotlib.pyplot as plt
 from numpy.linalg import pinv
 import numpy.linalg 
@@ -16,7 +15,7 @@ for i in range(60):
 X_all = raw_data[:,0:16]
 Y_all = raw_data[:,16:]
 
-indexes = np.arange(0, 48, 1)
+indexes = np.arange(0, len(raw_data), 1)
 
 np.random.seed(31)
 np.random.shuffle(indexes)
@@ -32,17 +31,23 @@ w = p.dot(y_train)
 
 def mse(y_pred, y):
     return (y_pred-y).T.dot(y_pred-y)/len(y_pred)
+
 y_pred = w.T.dot(X_train.T)
+
 
 
 
 p_test = pinv(X_test.T.dot(X_test)).dot(X_test.T)
 w_test = p_test.dot(y_test)
 y_test_pred = w_test.T.dot(X_test.T)
+print(mse(y_test_pred, y_test))
 
 plt.figure(figsize=(16, 8))
 plt.scatter(X_train[:, 0], y_train, c='b')   
 plt.scatter(X_train[:, 0], y_pred, c='r') 
 plt.show()
 
-
+plt.figure(figsize=(16, 8)) 
+plt.scatter(X_test[:, 0], y_test, c='b')   
+plt.scatter(X_test[:, 0], y_test_pred, c='r')   
+plt.show()
